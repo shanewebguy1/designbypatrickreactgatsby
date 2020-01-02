@@ -1,10 +1,22 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `ADA Friendly Developer & Designer`,
+    description: ``,
+    author: `@weibenfalk`,
   },
   plugins: [
+    {
+      resolve: 'gatsby-source-gravityforms',
+      options: {
+          // Base URL needs to include protocol (http/https)
+          baseUrl: 'https://www.designbypatrick.com',
+          // Gravity Forms API
+          api: {
+              key: 'ck_e770b01354887700dcefec8d3857432e904ecf63',
+              secret: 'cs_5b34d772a6b32b150e71e69fd4afb39aa5ac71b6',
+          },
+      },
+    },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -27,8 +39,50 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    {
+      resolve: 'gatsby-source-wordpress',
+      options: {
+        excludedRoutes: ['/wp/v2/users/**', '/wp/v2/settings*'],
+        baseUrl: 'designbypatrick.com',
+        protocol: 'https',
+        withWebp: true,
+        hostingWPCOM: false,
+        useACF: true,
+        plugins: [
+          {
+            resolve: `gatsby-wordpress-inline-images`,
+            options: {
+              baseUrl: `designbypatrick.com`,
+              protocol: `https`,
+            }
+          }
+        ] ,
+        searchAndReplaceContentUrls: {
+          sourceUrl: 'https://www.designbypatrick.com/',
+          replacementUrl: '',
+        },
+      },
+    },
+    'gatsby-plugin-styled-components',
+    {
+      resolve: 'gatsby-plugin-prefetch-google-fonts',
+      options: {
+        fonts: [
+          {
+            family: 'Teko',
+            variants: ['200', '400', '500', '600', '700'],
+          },
+          {
+            family: 'Oswald',
+            variants: ['200', '400', '500', '600', '700'],
+          },
+        ],
+      },
+    },
+
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
   ],
+  
 }
